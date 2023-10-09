@@ -1,77 +1,52 @@
 #import "utils.typ"
 
-// Load CV Data from YAML
-//#let info = yaml("cv.typ.yml")
-
-// Variables
-//#let headingfont = "Linux Libertine" // Set font for headings
-//#let bodyfont = "Linux Libertine"   // Set font for body
-//#let fontsize = 10pt // 10pt, 11pt, 12pt
-//#let linespacing = 6pt
-
-//#let showAddress = true // true/false Show address in contact info
-//#let showNumber = true  // true/false Show phone number in contact info
-
-// set rules
-#let setrules(uservars, doc) = {
+#let setRules(doc, options) = {
     set page(
-        paper: "us-letter", // a4, us-letter
+        paper: "us-letter",
         numbering: "1 / 1",
-        number-align: center, // left, center, right
-        margin: 1.25cm, // 1.25cm, 1.87cm, 2.5cm
+        number-align: center,
+        margin: 1.25cm,
     )
 
-    // Set Text settings
     set text(
-        font: uservars.bodyfont,
-        size: uservars.fontsize,
+        font: options.bodyFont,
+        size: options.fontSize,
         hyphenate: false,
+        lang: options.lang,
     )
 
-    // Set Paragraph settings
     set par(
-        leading: uservars.linespacing,
+        leading: options.lineSpacing,
         justify: true,
     )
 
     doc
 }
 
-// show rules
-#let showrules(uservars, doc) = {
-    // Uppercase Section Headings
-    show heading.where(
-        level: 2,
-    ): it => block(width: 100%)[
-        #set align(left)
-        #set text(font: uservars.headingfont, size: 1em, weight: "bold")
-        #upper(it.body)
-        #v(-0.75em) #line(length: 100%, stroke: 1pt + black) // Draw a line
-    ]
-
-    // Name Title
+#let showRules(doc, options) = {
     show heading.where(
         level: 1,
     ): it => block(width: 100%)[
-        #set text(font: uservars.headingfont, size: 1.5em, weight: "bold")
+        #set text(font: options.headingFont, size: 1.5em, weight: "bold")
         #upper(it.body)
         #v(2pt)
     ]
 
-    doc
-}
-
-// Set Page Layout
-#let cvinit(doc) = {
-    doc = setrules(doc)
-    doc = showrules(doc)
+    show heading.where(
+        level: 2,
+    ): it => block(width: 100%)[
+        #set align(left)
+        #set text(font: options.headingFont, size: 1em, weight: "bold")
+        #upper(it.body)
+        #v(-0.75em) #line(length: 100%, stroke: 1pt + black) // Draw a line
+    ]
 
     doc
 }
 
 // Address
-#let addresstext(info, uservars) = {
-    if uservars.showAddress {
+#let addresstext(info, options) = {
+    if options.showAddress {
         block(width: 100%)[
             #info.personal.location.city, #info.personal.location.region, #info.personal.location.country #info.personal.location.postalCode
             #v(-4pt)
@@ -80,12 +55,12 @@
 }
 
 // Arrange the contact profiles with a diamond separator
-#let contacttext(info, uservars) = block(width: 100%)[
+#let contacttext(info, options) = block(width: 100%)[
     // Contact Info
     // Create a list of contact profiles
     #let profiles = (
         box(link("mailto:" + info.personal.email)),
-        if uservars.showNumber {box(link("tel:" + info.personal.phone))} else {none},
+        if options.showNumber {box(link("tel:" + info.personal.phone))} else {none},
         box(link(info.personal.url)[#info.personal.url.split("//").at(1)]),
     )
 
@@ -104,34 +79,34 @@
     }
 
     // #set par(justify: false)
-    #set text(font: uservars.bodyfont, weight: "medium", size: uservars.fontsize * 1)
+    #set text(font: options.bodyFont, weight: "medium", size: options.fontSize * 1)
     #pad(x: 0em)[
         #profiles.join([#sym.space.en #sym.diamond.filled #sym.space.en])
     ]
 ]
 
 // Create layout of the title + contact info
-#let cvheading(info, uservars) = {
+#let cvHeading(info, options) = {
     align(center)[
         = #info.personal.name
-        #addresstext(info, uservars)
-        #contacttext(info, uservars)
+        #addresstext(info, options)
+        #contacttext(info, options)
         // #v(0.5em)
     ]
 }
 
-#let cvsummary(info) = {
+#let cvSummary(info, i18n) = {
     if info.summary != none [
-        == Summary
+        == #i18n.summary
 
         #info.summary
     ]
 }
 
 // Education
-#let cveducation(info) = {
+#let cvEducation(info, i18n) = {
     if info.education != none [
-        == Education
+        == #i18n.education.title
 
         #for edu in info.education {
             // Parse ISO date strings into datetime objects
@@ -146,8 +121,8 @@
                 #text(style: "italic")[#edu.studyType#if edu.area != none [ in #edu.area]] #h(1fr)
                 #start.display("[month repr:short]") #start.year() #sym.dash.en #end.display("[month repr:short]") #end.year() \
                 // Bullet points
-                - *Honors*: #edu.honors.join(", ")
-                - *Courses*: #edu.courses.join(", ")
+                - *#i18n.education.honors*: #edu.honors.join(", ")
+                - *#i18n.education.courses*: #edu.courses.join(", ")
                 // Highlights or Description
                 #if edu.highlights != none {
                     for hi in edu.highlights [
@@ -160,18 +135,17 @@
 }
 
 // Work Experience
-#let cvwork(info) = {
+#let cvWork(info, i18n) = {
     if info.work != none [
-        == Work Experience
+        == #i18n.work.title
 
         #for w in info.work {
             // Parse ISO date strings into datetime objects
             let start = utils.strpdate(w.startDate)
-            let end = [Present]
-            if w.endDate != none {
+            let end = if w.endDate != none {
                 let endDate = utils.strpdate(w.endDate)
                 end = [#endDate.display("[month repr:short]") #endDate.year()]
-            }
+            } else [Present]
 
             // Create a block layout for each education entry
             block(width: 100%)[
@@ -190,7 +164,7 @@
 }
 
 // Leadership and Activities
-#let cvaffiliations(info) = {
+#let cvAffiliations(info) = {
     if info.affiliations != none [
         == Leadership & Activities
 
@@ -218,9 +192,9 @@
 }
 
 // Projects
-#let cvprojects(info) = {
+#let cvProjects(info, i18n) = {
     if info.projects != none [
-        == Projects
+        == #i18n.projects.title
 
         #for project in info.projects {
             // Parse ISO date strings into datetime objects
@@ -247,7 +221,7 @@
 }
 
 // Honors and Awards
-#let cvawards(info) = {
+#let cvAwards(info) = {
     if info.awards != none [
         == Honors & Awards
 
@@ -273,9 +247,9 @@
 }
 
 // Certifications
-#let cvcertificates(info) = {
+#let cvCertificates(info, i18n) = {
     if info.certificates != none [
-        == Licenses & Certifications
+        == #i18n.certificates.title
 
         #for cert in info.certificates {
             // Parse ISO date strings into datetime objects
@@ -286,15 +260,15 @@
                 // Line 1: Institution and Location
                 *#link(cert.url)[#cert.name]* \
                 // Line 2: Degree and Date Range
-                Issued by #text(style: "italic")[#cert.issuer]  #h(1fr) #date.display("[month repr:short]") #date.year() \
-                Credential ID #cert.credentialId \
+                #i18n.certificates.issuedBy #text(style: "italic")[#cert.issuer]  #h(1fr) #date.display("[month repr:short]") #date.year() \
+                #i18n.certificates.credentialId #text(style: "italic")[#cert.credentialId] \
             ]
         }
     ]
 }
 
 // Research & Publications
-#let cvpublications(info) = {
+#let cvPublications(info) = {
     if info.publications != none [
         == Research & Publications
 
@@ -314,9 +288,18 @@
 }
 
 // Skills, Languages, and Interests
-#let cvskills(info) = {
+#let cvSkills(info, i18n) = {
     if (info.languages != none) or (info.skills != none) or (info.interests != none) [
-        == Skills, Languages#if info.interests != none [, Interests]
+        #let title = (i18n.skills.titles.languages, i18n.skills.titles.skills, i18n.skills.titles.interests)
+        #if info.languages == none {
+            title.remove(0)
+        } else if info.skills == none {
+            title.remove(1)
+        } else if info.interests == none {
+            title.remove(2)
+        }
+
+        == #title.join(", ", last: " & ")
 
         #if (info.languages != none) [
             #let langs = ()
@@ -337,7 +320,7 @@
 }
 
 // References
-#let cvreferences(info) = {
+#let cvReferences(info) = {
     if info.references != none [
         == References
 
