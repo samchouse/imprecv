@@ -292,11 +292,11 @@
     if (info.languages != none) or (info.skills != none) or (info.interests != none) [
         #let title = (i18n.skills.titles.languages, i18n.skills.titles.skills, i18n.skills.titles.interests)
         #if info.languages == none {
-            title.remove(0)
+            let _ = title.remove(0)
         } else if info.skills == none {
-            title.remove(1)
+            let _ = title.remove(1)
         } else if info.interests == none {
-            title.remove(2)
+            let _ = title.remove(2)
         }
 
         == #title.join(", ", last: " & ")
