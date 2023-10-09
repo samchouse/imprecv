@@ -104,7 +104,7 @@
                         "format": "date"
                     },
                     "endDate": {
-                        "type": "string",
+                        "type": ["string", "null"],
                         "format": "date"
                     },
                     "highlights": {
@@ -141,7 +141,7 @@
                         "format": "uri"
                     },
                     "area": {
-                        "type": "string"
+                        "type": ["string", "null"]
                     },
                     "studyType": {
                         "type": "string"
@@ -170,7 +170,7 @@
                         }
                     },
                     "highlights": {
-                        "type": "array",
+                        "type": ["array", "null"],
                         "items": {
                             "type": "string"
                         }
@@ -191,7 +191,7 @@
             }
         },
         "affiliations": {
-            "type": "array",
+            "type": ["array", "null"],
             "items": {
                 "type": "object",
                 "properties": {
@@ -235,7 +235,7 @@
             }
         },
         "awards": {
-            "type": "array",
+            "type": ["array", "null"],
             "items": {
                 "type": "object",
                 "properties": {
@@ -288,6 +288,9 @@
                     "issuer": {
                         "type": "string"
                     },
+                    "credentialId": {
+                        "type": "string"
+                    },
                     "url": {
                         "type": "string",
                         "format": "uri"
@@ -297,12 +300,13 @@
                     "name",
                     "date",
                     "issuer",
+                    "credentialId",
                     "url"
                 ]
             }
         },
         "publications": {
-            "type": "array",
+            "type": ["array", "null"],
             "items": {
                 "type": "object",
                 "properties": {
@@ -349,7 +353,7 @@
                         "format": "date"
                     },
                     "endDate": {
-                        "type": "string",
+                        "type": ["string", "null"],
                         "format": "date"
                     },
                     "highlights": {
@@ -409,13 +413,13 @@
             }
         },
         "interests": {
-            "type": "array",
+            "type": ["array", "null"],
             "items": {
                 "type": "string"
             }
         },
         "references": {
-            "type": "array",
+            "type": ["array", "null"],
             "items": {
                 "type": "object",
                 "properties": {
@@ -436,6 +440,9 @@
                     "url"
                 ]
             }
+        },
+        "summary": {
+            "type": "string"
         }
     },
     "required": [

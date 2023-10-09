@@ -120,6 +120,14 @@
     ]
 }
 
+#let cvsummary(info) = {
+    if info.summary != none [
+        == Summary
+
+        #info.summary
+    ]
+}
+
 // Education
 #let cveducation(info) = {
     if info.education != none [
@@ -135,15 +143,17 @@
                 // Line 1: Institution and Location
                 *#link(edu.url)[#edu.institution]* #h(1fr) *#edu.location* \
                 // Line 2: Degree and Date Range
-                #text(style: "italic")[#edu.studyType in #edu.area] #h(1fr)
+                #text(style: "italic")[#edu.studyType#if edu.area != none [ in #edu.area]] #h(1fr)
                 #start.display("[month repr:short]") #start.year() #sym.dash.en #end.display("[month repr:short]") #end.year() \
                 // Bullet points
                 - *Honors*: #edu.honors.join(", ")
                 - *Courses*: #edu.courses.join(", ")
                 // Highlights or Description
-                #for hi in edu.highlights [
-                    - #eval("[" + hi + "]")
-                ]
+                #if edu.highlights != none {
+                    for hi in edu.highlights [
+                        - #eval("[" + hi + "]")
+                    ]
+                }
             ]
         }
     ]
@@ -157,7 +167,11 @@
         #for w in info.work {
             // Parse ISO date strings into datetime objects
             let start = utils.strpdate(w.startDate)
-            let end = utils.strpdate(w.endDate)
+            let end = [Present]
+            if w.endDate != none {
+                let endDate = utils.strpdate(w.endDate)
+                end = [#endDate.display("[month repr:short]") #endDate.year()]
+            }
 
             // Create a block layout for each education entry
             block(width: 100%)[
@@ -165,7 +179,7 @@
                 *#link(w.url)[#w.organization]* #h(1fr) *#w.location* \
                 // Line 2: Degree and Date Range
                 #text(style: "italic")[#w.position] #h(1fr)
-                #start.display("[month repr:short]") #start.year() #sym.dash.en #end.display("[month repr:short]") #end.year() \
+                #start.display("[month repr:short]") #start.year() #sym.dash.en #end \
                 // Highlights or Description
                 #for hi in w.highlights [
                     - #eval("[" + hi + "]")
@@ -211,14 +225,18 @@
         #for project in info.projects {
             // Parse ISO date strings into datetime objects
             let start = utils.strpdate(project.startDate)
-            let end = utils.strpdate(project.endDate)
+            let end = [Present]
+            if project.endDate != none {
+                let endDate = utils.strpdate(project.endDate)
+                end = [#endDate.display("[month repr:short]") #endDate.year()]
+            }
 
             // Create a block layout for each education entry
             block(width: 100%)[
                 // Line 1: Institution and Location
                 *#link(project.url)[#project.name]* \
                 // Line 2: Degree and Date Range
-                #text(style: "italic")[#project.affiliation]  #h(1fr) #start.display("[month repr:short]") #start.year() #sym.dash.en #end.display("[month repr:short]") #end.year() \
+                #text(style: "italic")[#project.affiliation]  #h(1fr) #start.display("[month repr:short]") #start.year() #sym.dash.en #end \
                 // Summary or Description
                 #for hi in project.highlights [
                     - #eval("[" + hi + "]")
@@ -269,6 +287,7 @@
                 *#link(cert.url)[#cert.name]* \
                 // Line 2: Degree and Date Range
                 Issued by #text(style: "italic")[#cert.issuer]  #h(1fr) #date.display("[month repr:short]") #date.year() \
+                Credential ID #cert.credentialId \
             ]
         }
     ]
@@ -297,7 +316,7 @@
 // Skills, Languages, and Interests
 #let cvskills(info) = {
     if (info.languages != none) or (info.skills != none) or (info.interests != none) [
-        == Skills, Languages, Interests
+        == Skills, Languages#if info.interests != none [, Interests]
 
         #if (info.languages != none) [
             #let langs = ()
@@ -338,25 +357,7 @@
         bottom + right,
         block[
             #set text(size: 5pt, font: "Consolas", fill: silver)
-            \*This document was last updated on #datetime.today().display("[year]-[month]-[day]") using #strike[LaTeX] #link("https://typst.app")[Typst].
+            \*This document was last updated on #datetime.today().display("[year]-[month]-[day]").
         ]
     )
 }
-
-// #place(
-//     bottom + right,
-//     dy: -71%,
-//     dx: 4%,
-//     rotate(
-//         270deg,
-//         origin: right + horizon,
-//         block(width: 100%)[
-//             #set align(left)
-//             #set par(leading: 0.5em)
-//             #set text(size: 6pt)
-
-//             #super(sym.dagger) This document was last updated on #raw(datetime.today().display("[year]-[month]-[day]")) using #strike[LaTeX] #link("https://typst.app")[Typst].
-//             // Template by Je Sian Keith Herman.
-//         ]
-//     )
-// )
