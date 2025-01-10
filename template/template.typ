@@ -13,6 +13,7 @@
     showTitle: true,         // bool
     headingsmallcaps: false, // bool
     sendnote: false,         // bool. set to false to have sideways endnote
+    lang: en,                // format of ISO 639-1/2/3
 )
 
 // setrules and showrules can be overridden by re-declaring it here
