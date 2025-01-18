@@ -8,6 +8,8 @@
         strings = i18n.en
     } else if uservars.lang == "de" and uservars.region == none {
         strings = i18n.de
+    } else if uservars.lang == "pt" and uservars.region == "BR" {
+        strings = i18n.pt-BR
     }
 
     strings
