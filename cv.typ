@@ -4,9 +4,9 @@
 
 #let setstrings(uservars) = {
     let strings
-    if uservars.lang == "en" {
+    if uservars.lang == "en" and uservars.region == none {
         strings = i18n.en
-    } else if uservars.lang == "de" {
+    } else if uservars.lang == "de" and uservars.region == none {
         strings = i18n.de
     }
 
@@ -20,6 +20,7 @@
         size: uservars.fontsize,
         hyphenate: false,
         lang: uservars.lang,
+        region: uservars.region,
     )
 
     set list(
@@ -42,7 +43,7 @@
     ): it => block(width: 100%)[
         #v(uservars.sectionspacing)
         #set align(left)
-        #set text(font: uservars.headingfont, size: 1em, weight: "bold", lang: uservars.lang)
+        #set text(font: uservars.headingfont, size: 1em, weight: "bold", lang: uservars.lang, region: uservars.region)
         #if (uservars.at("headingsmallcaps", default:false)) {
             smallcaps(it.body)
         } else {
@@ -55,7 +56,7 @@
     show heading.where(
         level: 1,
     ): it => block(width: 100%)[
-        #set text(font: uservars.headingfont, size: 1.5em, weight: "bold", lang: uservars.lang)
+        #set text(font: uservars.headingfont, size: 1.5em, weight: "bold", lang: uservars.lang, region: uservars.region)
         #if (uservars.at("headingsmallcaps", default:false)) {
             smallcaps(it.body)
         } else {

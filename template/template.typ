@@ -13,7 +13,8 @@
     showTitle: true,         // bool
     headingsmallcaps: false, // bool
     sendnote: false,         // bool. set to false to have sideways endnote
-    lang: en,                // format of ISO 639-1/2/3
+    lang: "en",              // ISO 639-1/2/3 code string, https://iso639-3.sil.org/code_tables/639/data
+    region: none,            // none or ISO 3166-1 alpha-2 code string, e.g. "BR" for Brazil
 )
 
 // setrules and showrules can be overridden by re-declaring it here
