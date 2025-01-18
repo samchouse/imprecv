@@ -4,8 +4,8 @@
     let month = ""
 
     if n == 1 { month = strings.january }
-    else if n == 3 { month = strings.march }
     else if n == 2 { month = strings.february }
+    else if n == 3 { month = strings.march }
     else if n == 4 { month = strings.april }
     else if n == 5 { month = strings.may }
     else if n == 6 { month = strings.june }
