@@ -1,6 +1,6 @@
 #import "utils.typ"
 
-#let i18n = yaml("i18n.yml")
+#let i18n = toml("i18n.toml")
 
 #let setstrings(uservars) = {
     let strings
