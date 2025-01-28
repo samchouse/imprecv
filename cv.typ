@@ -6,10 +6,8 @@
     let strings
     if uservars.lang == "en" and uservars.region == none {
         strings = i18n.en
-    } else if uservars.lang == "de" and uservars.region == none {
-        strings = i18n.de
-    } else if uservars.lang == "pt" and uservars.region == "BR" {
-        strings = i18n.pt-BR
+    } else if uservars.lang == "fr" and uservars.region == none {
+        strings = i18n.fr
     }
 
     strings
