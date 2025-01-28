@@ -1,2 +1,2 @@
-cv.pdf
-util.pdf
+# Ignore compiled PDFs
+*.pdf
