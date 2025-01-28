@@ -13,6 +13,8 @@
     showTitle: true,         // bool
     headingsmallcaps: false, // bool
     sendnote: false,         // bool. set to false to have sideways endnote
+    lang: "en",              // ISO 639-1/2/3 code string, https://iso639-3.sil.org/code_tables/639/data
+    region: none,            // none or ISO 3166-1 alpha-2 code string, e.g. "BR" for Brazil
 )
 
 // setrules and showrules can be overridden by re-declaring it here
@@ -51,14 +53,16 @@
 
 #show: doc => cvinit(doc)
 
+#let strings = setstrings(uservars)
+
 #cvheading(cvdata, uservars)
-#cvwork(cvdata)
-#cveducation(cvdata)
-#cvaffiliations(cvdata)
-#cvprojects(cvdata)
-#cvawards(cvdata)
-#cvcertificates(cvdata)
-#cvpublications(cvdata)
-#cvskills(cvdata)
-#cvreferences(cvdata)
-#endnote(uservars)
+#cvwork(cvdata, strings)
+#cveducation(cvdata, strings)
+#cvaffiliations(cvdata, strings)
+#cvprojects(cvdata, strings)
+#cvawards(cvdata, strings)
+#cvcertificates(cvdata, strings)
+#cvpublications(cvdata, strings)
+#cvskills(cvdata, strings)
+#cvreferences(cvdata, strings)
+#endnote(uservars, strings)
