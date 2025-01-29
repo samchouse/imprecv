@@ -54,7 +54,7 @@
                             "default": ""
                         },
                         "postalCode": {
-                            "type": "integer",
+                            "type": ["integer", "string"],
                             "default": 0
                         }
                     }
@@ -80,6 +80,9 @@
                     }
                 }
             }
+        },
+        "summary": {
+            "type": "string"
         },
         "work": {
             "type": "array",
@@ -131,7 +134,7 @@
             "default": [],
             "items": {
                 "type": "object",
-                "required": ["institution", "location", "area", "studyType", "startDate", "endDate", "highlights"],
+                "required": ["institution", "location", "studyType", "startDate", "endDate", "highlights"],
                 "properties": {
                     "institution": {
                         "type": "string"
@@ -144,7 +147,7 @@
                         "format": "uri"
                     },
                     "area": {
-                        "type": "string"
+                        "type": ["string", "null"]
                     },
                     "studyType": {
                         "type": "string"
