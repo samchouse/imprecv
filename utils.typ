@@ -3,26 +3,44 @@
     n = int(n)
     let month = ""
 
-    if n == 1 { month = strings.january }
-    else if n == 2 { month = strings.february }
-    else if n == 3 { month = strings.march }
-    else if n == 4 { month = strings.april }
-    else if n == 5 { month = strings.may }
-    else if n == 6 { month = strings.june }
-    else if n == 7 { month = strings.july }
-    else if n == 8 { month = strings.august }
-    else if n == 9 { month = strings.september }
-    else if n == 10 { month = strings.october }
-    else if n == 11 { month = strings.november }
-    else if n == 12 { month = strings.december }
-    else { month = none }
-    if month != none {
-        if display == "short" {
-            month = month.codepoints().slice(0, 3).join()
-        } else {
-            month
-        }
-    }
+    if n == 1 { 
+        month = strings.january
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.january).join() }
+    } else if n == 2 { 
+        month = strings.february
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.february).join() }
+    } else if n == 3 { 
+        month = strings.march
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.march).join() }
+    } else if n == 4 { 
+        month = strings.april
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.april).join() }
+    } else if n == 5 { 
+        month = strings.may
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.may).join() }
+    } else if n == 6 { 
+        month = strings.june
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.june).join() }
+    } else if n == 7 { 
+        month = strings.july
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.july).join() }
+    } else if n == 8 { 
+        month = strings.august
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.august).join() }
+    } else if n == 9 { 
+        month = strings.september
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.september).join() }
+    } else if n == 10 { 
+        month = strings.october
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.october).join() }
+    } else if n == 11 {
+        month = strings.november
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.november).join() }
+    } else if n == 12 { 
+        month = strings.december
+        if display == "short" { month = month.codepoints().slice(0, strings.abbreviate.december).join() }
+    } else { month = none }
+
     month
 }
 
