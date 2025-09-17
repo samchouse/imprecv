@@ -128,10 +128,18 @@
 }
 
 #let cvSummary(info, strings) = {
-  if info.summary != none [
+  if "summary" in info and info.summary != none [
     == #strings.summary
 
     #info.summary
+  ]
+}
+
+#let cvObjective(info, strings) = {
+  if "objective" in info and info.objective != none [
+    == #strings.objective
+
+    #info.objective
   ]
 }
 
@@ -177,7 +185,7 @@
       == #strings.education
       #for edu in info.education {
         let start = utils.strpdate(edu.startDate, strings)
-        let end = utils.strpdate(edu.endDate, strings)
+        let end = if edu.endDate != none { utils.strpdate(edu.endDate, strings) } else { strings.present }
 
         let edu-items = ""
         if ("honors" in edu) and (edu.honors != none) {
@@ -240,7 +248,7 @@
             for hi in org.highlights [
               - #eval(hi, mode: "markup")
             ]
-          } else { }
+          } else {}
         ]
       }
     ]
@@ -297,7 +305,7 @@
             for hi in award.highlights [
               - #eval(hi, mode: "markup")
             ]
-          } else { }
+          } else {}
         ]
       }
     ]
@@ -433,7 +441,7 @@
         ]
       }
     ]
-  } else { }
+  } else {}
 }
 
 #let endnote(uservars, strings) = {

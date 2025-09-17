@@ -33,6 +33,7 @@ september = "September"
 october = "October"
 november = "November"
 december = "December"
+objective = "Objective"
 
 [en.abbreviate]
 january = 3
@@ -83,6 +84,7 @@ september = "Septembre"
 october = "Octobre"
 november = "Novembre"
 december = "Décembre"
+objective = "Objectif"
 
 [fr.abbreviate]
 january = 4
